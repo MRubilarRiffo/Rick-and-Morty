@@ -1,8 +1,7 @@
-import { GET_CHARACTERS, ELIMINAR_CHAR, ADD_FAVORITE, CLEAR } from "./actions-type";
+import { GET_CHARACTERS, ELIMINAR_CHAR, FAVORITE, CLEAR } from "./actions-type";
 
 const initialState = {
-    characters: [],
-    favorite: [],
+    characters: []
 };
 
 const reducer = (state = initialState, action) => {
@@ -15,18 +14,18 @@ const reducer = (state = initialState, action) => {
         case ELIMINAR_CHAR:
             return {
                 ...state,
-                characters: state.characters.filter((char)=> char.id !== Number(action.payload))
+                characters: state.characters.filter((char) => char.id !== Number(action.payload)),
             };
-        case ADD_FAVORITE:
+        case FAVORITE:
+            state.characters.splice(state.characters.findIndex((x) => x.id === action.payload.id), 1, action.payload)
             return {
                 ...state,
-                favorite: [...state.favorite, state.characters.filter((char)=> char.id === Number(action.payload))[0]]
+                characters: state.characters
             };
         case CLEAR:
             return {
                 ...state,
                 characters: [],
-                favorite: []
             };
         default:
             return {...state};

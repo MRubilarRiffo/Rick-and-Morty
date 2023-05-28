@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GET_CHARACTERS, ELIMINAR_CHAR, ADD_FAVORITE, CLEAR } from './actions-type';
+import { GET_CHARACTERS, ELIMINAR_CHAR, FAVORITE, CLEAR } from './actions-type';
 
 export const getCharacters = (id) =>{
     return async function(dispatch){
@@ -14,18 +14,33 @@ export const getCharacters = (id) =>{
 
 export const eliminarCharUI = (id) => {
     return async function(dispatch) {
-        dispatch({type: ELIMINAR_CHAR, payload: id});
+        try {
+            await axios.delete(`http://localhost:3001/rickandmorty/delete/${id}`);
+            return dispatch({type: ELIMINAR_CHAR, payload: id});
+        } catch (error) {
+            console.error(error);
+        };
     };
 };
 
-export const addFavorite = (id) => {
+export const favorite = (id) => {
     return async function(dispatch) {
-        dispatch({type: ADD_FAVORITE, payload: id});
+        try {
+            let response = await axios.put(`http://localhost:3001/rickandmorty/favorite/${id}`);
+            return dispatch({type: FAVORITE, payload: response.data});
+        } catch (error) {
+            console.error(error);
+        };
     };
 };
 
 export const clear = () => {
     return async function(dispatch) {
-        dispatch({type: CLEAR});
+        try {
+            await axios.delete(`http://localhost:3001/rickandmorty/delete`);
+            dispatch({type: CLEAR});
+        } catch (error) {
+            console.error(error);
+        };
     };
 };

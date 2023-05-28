@@ -1,6 +1,6 @@
 import './SearchBar.css'
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getCharacters, clear } from "../redux/actions";
 
 const SearchBar = () => {
@@ -12,6 +12,13 @@ const SearchBar = () => {
         setId(event.target.value)
     };
 
+    const char = useSelector((state) => state.characters);
+    const get = (id) => {
+        if(Number(id) > 0 && Number(id) < 827 && !char.some((x) => x.id === Number(id))) {
+            dispatch(getCharacters(id));
+        };
+    };  
+
     return (
         <div className="bar">
             <input 
@@ -19,8 +26,8 @@ const SearchBar = () => {
                 onChange={handleChange}
                 value={id}
             />
-            <button onClick={() => dispatch(getCharacters(id))}>Agregar</button>
-            <button onClick={() => dispatch(getCharacters(Math.floor(Math.random() * (826)) + 1))}>Random</button>
+            <button onClick={() => get(id)}>Agregar</button>
+            <button onClick={() => get(Math.floor(Math.random() * (826)) + 1)}>Random</button>
             <button onClick={() => dispatch(clear())}>Limpiar</button>
         </div>
     );

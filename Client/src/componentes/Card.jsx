@@ -1,10 +1,11 @@
 import "./Card.css"
 import { AiFillDelete, AiFillHeart } from "react-icons/ai";
 import { useDispatch } from "react-redux";
-import { eliminarCharUI, addFavorite } from "../redux/actions";
+import { eliminarCharUI, favorite } from "../redux/actions";
 
 const Card = ({props}) => {
     const dispatch = useDispatch();
+
     return (
         <div className="container">
             <div className="card front">
@@ -24,7 +25,7 @@ const Card = ({props}) => {
                     <button className="btn" onClick={() => dispatch(eliminarCharUI(props.id))}>
                         <AiFillDelete />
                     </button>
-                    <button className="btn" onClick={() => dispatch(addFavorite(props.id))}>
+                    <button className={"btn"} onClick={() => dispatch(favorite(props.id))}>
                         <AiFillHeart />
                     </button>
                 </div>

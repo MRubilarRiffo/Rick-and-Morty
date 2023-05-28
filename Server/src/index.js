@@ -1,26 +1,21 @@
 const express = require('express');
-const server = express();
-const { getCharById } = require('./Controllers/getCharById')
-const { router } = require('./Routes/index')
 const morgan = require('morgan');
+const userRouter = require('./routes/userRoutes');
+const app = express();
 
-server.use(express.json());
-server.use(morgan('dev'));
-
-server.use((req, res, next) => {
+//----MIDDLEWARES
+app.use(express.json());
+app.use(morgan('dev'));
+app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Credentials', 'true');
-    res.header(
-       'Access-Control-Allow-Headers',
-       'Origin, X-Requested-With, Content-Type, Accept'
-    );
-    res.header(
-       'Access-Control-Allow-Methods',
-       'GET, POST, OPTIONS, PUT, DELETE'
-    );
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
     next();
 });
 
-server.use('/rickandmorty', router);
+//----RUTAS
+app.use('/rickandmorty', userRouter)
 
-server.listen(3002, console.log(`Listenin on port: 3002`));
+
+module.exports = app;
